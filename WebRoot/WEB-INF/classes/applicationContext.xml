@@ -35,11 +35,15 @@
 		 			<prop key="hibernate.format_sql">true</prop>
 		 			<prop key="hibernate.connection.autocommit">false</prop>
 		 			<prop key="hibernate.hbm2ddl.auto">update</prop>
-	 			</props>	
-	 			
-	 		<!-- 配置hibernate的映射文件 -->
-	 		
+	 			</props>	 		
 	 		</property>
+	 		<!-- 配置hibernate的映射文件 -->
+	 		<property name="mappingResources">
+	 			<list>
+	 				<value>cn/itcast/shop/user/vo/User.hbm.xml</value>
+	 			</list>
+	 		</property>
+	 		
 	 </bean>		
 	 <!-- 配置事务管理 -->
 	 <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
@@ -55,11 +59,19 @@
 	</bean>
 	
 	<bean id="UserAction" class="cn.itcast.shop.user.action.UserAction" scope="prototype">
+		<!-- 注入service -->
+		<property name="UserService" ref = "UserService"></property>
 	</bean>
 	
 	<!--  Service的配置=====================================  -->
-	
+	<bean id="UserService" class= "cn.itcast.shop.user.service.UserService">
+		<!-- 注入dao -->
+		<property name="UserDao" ref="UserDao"></property>
+	</bean>
 	
 	
 	<!--  Dao的配置=====================================  -->
+	<bean id="UserDao" class = "cn.itcast.shop.user.dao.UserDao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
 </beans>

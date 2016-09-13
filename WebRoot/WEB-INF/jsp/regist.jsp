@@ -48,30 +48,34 @@ $(function(){
 		}else if(!captchaVal){
 			alert("验证码不能为空！");
 			return false;
-		}
-		
-		//ajax校验用户名是否存在
-		$("#username").blur(function(){
-			$.ajax({
-				url:"",
-				data:{username:usernameVal},
-				type:"POST",
-				dataType:"json",
-				async:false,
-				cache:false,
-				success:function(result){
-				
-				}
-			
-			});
-		});
-		
+		}	
 		return true;
 				
 	});
 	
 	
-
+	//ajax校验用户名是否存在
+		$("#username").blur(function(){
+			var username = $("#username").val();
+			$.ajax({
+				url:"${pageContext.request.contextPath}/user_findByUsername.action",
+				data:{username:username},
+				type:"POST",
+				dataType:"json",
+				async:false,
+				cache:false,
+				success:function(result){
+					if(result){
+						//用户名存在
+						$("#span1").html("<font color='red'>用户名已存在</font>");
+					}else{
+						//用户名不存在时
+						$("#span1").html("<font color='green'>用户名可以使用</font>");
+					}
+				}
+			
+			});
+		});
 });
 	
 </script>
@@ -107,6 +111,7 @@ $(function(){
 								</th>
 								<td>
 									<input type="text" id="username" name="username" class="text" maxlength="20"/>
+									<span id = "span1"></span>
 								</td>
 							</tr>
 							<tr>
